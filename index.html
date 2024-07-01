@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Labtop Battery Testing  ">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Ahmed Saif">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+	
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Custom css -->
+<link rel="stylesheet" href="./index.css">
+
+    <title>BATTERY TEST TRACKER </title>
+</head>
+
+
+<body class="container ">
+<div class="container  maindiv">
+  <!-- navbar -->
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="container">
+      <h4>BATTERY TEST TRACKER</h4> <br>
+        <button type="button" class="btn btn-success" id="start" onclick="saveToLocalStorage('myKey', 'myValue')"> Start </button> 
+        <button type="button" class="btn btn-info" id="restor"  onclick="restored()"> <a href="#otest">Restore</a></button> 
+        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModal">Delete Report</button>
+      </div>  
+    </nav>
+
+  <div id="data"></div>
+  <p id="timestart"></p>
+
+<!-- main table -->
+  <table class="table border" >
+    <tbody>
+      <tr  style="height: 154px">
+        <th scope="row" class="test-timer" >Test Timer <br /> <span id="time"></span> </th>
+        <td id="icon"> <div id="div1" class="fa"> 
+
+          <div  id="instrct" >
+            <ul>
+             <h1 style="font-weight: 700;">instructions:</h1>
+             <li>Unplug the charger from the device   </li>
+             <li>For CPU Stress type" yes " in the terminal</li>
+             <p style="color: #17a2b8" class="testduration">  </p>
+            </ul>
+          </div>
+
+        </div> <h1 class="levelpass"></h1> <h1 class="levelfail"></h1> </td>
+      </tr>
+      <tr>
+        <th scope="row">Battery charging</th>
+        <td><p id="demo"></p></td>
+        <td><div id="demo2" > </div> </td>
+      </tr>
+      <tr>
+        <th scope="row">Start Time </th>
+        <td><p id="timestart1"></p></td>
+        <!-- <p>If the timer goes off before 30 minutes or the device goes to sleep, check by time and battery level it should be in around 30 minutes battery  not discharged more than 35% percent from start level</p> -->
+        <td> 
+          <div class="leveltimer" style="
+              background-color: #eaeaea;
+              width: 59px;
+              height: 30px;
+              font-size: large;
+              text-align: center;
+              border-radius: 5px;
+           "> 
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Battery Level</th>
+        <td><div class="btr" id="btr" style="white-space: pre-line"></div> </td>
+        <td><div style="white-space: pre-line"> <p  id="charging"></p></div> </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+<!--restord data will be here  -->
+  <div>
+    <h6 class="otest" id="otest">  </h6>
+    <div id="timerRs"></div>
+    <div id="demo3"></div>
+  </div>
+
+<!-- The Modal -->
+<div class="container">
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Warnning</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          This will clear old test data
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="clearData()" data-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  <!-- Start warnning modal -->
+  <div class="modal fade" id="storageModal" tabindex="-1" role="dialog" aria-labelledby="storageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="storageModalLabel">Warning</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          There is an old test report. Do you want to delete the old report before starting a new test, or keep the existing report?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="keepData">Keep Existing Report</button>
+          <button type="button" class="btn btn-danger" id="clearData">Delete and start</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<!-- End of modal section-->
+
+<!-- Java Script code  -->
+<script src="./index.js"></script>
+
+
+<script>
+function saveToLocalStorage(key, value) {
+
+// Check if local storage is empty
+if (localStorage.length > 0) {
+  // Show the modal if local storage is not empty
+  $('#storageModal').modal('show');
+
+  // Handle the clear and save action
+  document.getElementById('clearData').onclick = function() {
+      // Clear the local storage
+      localStorage.clear();
+      // Save the new data
+      localStorage.setItem(key, value);
+      // Hide the modal
+      $('#storageModal').modal('hide');
+      starTime()
+  };
+
+  // Handle the keep data action
+  document.getElementById('keepData').onclick = function() {
+      // Save the new data without clearing
+      localStorage.setItem(key, value);
+      // Hide the modal
+      $('#storageModal').modal('hide');
+      starTime()
+  };
+} else {
+  // If local storage is empty, save the data directly
+  // localStorage.setItem(key, value);
+  starTime()
+}
+}
+
+</script>
+
+
+</body>
+</html>
+

@@ -1,0 +1,176 @@
+html {
+    scroll-behavior: smooth;
+    overflow: auto;
+    }
+    body{
+      margin-top: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .red{
+      color: red;
+      margin-bottom: 0rem;
+    }
+    
+    .levelpara{
+      color: black;
+      margin-bottom: 0rem;
+      padding-left: 10rem;
+    }
+    .leveltime{
+      color: black;
+      margin-bottom: 0rem;
+
+    }
+
+
+    
+    a {
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+    } 
+
+    #demo3{
+    color: #42a3b9;
+    text-align: -webkit-center;
+    }
+    #demo3 > p {
+    margin-top: 3px;
+    margin-bottom: 0rem;
+    }
+    .otest{
+      text-align: center;
+    }
+
+    #timerRs{
+      text-align: center;
+        color: forestgreen;
+    }
+    .table{
+      margin-top: 0px;
+    }
+
+    .textarea{
+      position: relative;
+        left: -2px;
+    }
+  
+    #timestart1{
+      width: 120px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .maindiv{
+      padding: 7px;
+      border: 1px solid #d9d9d9;
+      width: 1000px;
+      max-width: 1200px;
+    }
+
+    #div1 {
+      font-size:32px;
+    }
+
+    .green{
+      color: green
+    }
+
+
+
+    /* Default styles for all screen sizes */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Styles for small screens (up to 600px) */
+@media screen and (max-width: 600px) {
+  .table {
+    display: block;
+  }
+
+  .table tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .table th,
+  .table td {
+    display: block;
+    text-align: left;
+  }
+}
+
+/* Styles for medium and larger screens (above 600px) */
+@media screen and (min-width: 600px) {
+  .table {
+    display: table;
+  }
+
+  .table th,
+  .table td {
+    display: table-cell;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    width: 214px;
+  }
+}
+
+.pass{
+    color: green;
+    font-size: large;
+    font-weight: 700;
+    background: #ddf0e3;
+    padding: 8px;
+    border-radius: 5px;
+}
+.fail{
+    color: red;
+    font-size: large;
+    font-weight: 700;
+    background: #ffd5d5;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.passicon{
+  color: green;
+  font-size: large;
+  font-weight: 700;
+}
+.test-timer{
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+}
+.test-timer span {
+ 
+  font-size: 45px;
+    font-weight: 700;
+    background: #f2f2f2;
+    padding: 15px;
+    border-radius: 5px;
+    display: block;
+    width: 230px;
+    height: 100px;
+}
+
+#icon {
+  width: 50%;
+  text-align: start;
+}
+#icon h1 {
+  font-size: 1.5rem;
+}
+#instrct{
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 26px;
+  font-family: sans-serif;
+}
+#instrct li{
+    margin: 5px;
+}
+
+
