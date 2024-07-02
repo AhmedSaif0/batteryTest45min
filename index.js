@@ -5,8 +5,8 @@ let div1 =  document.getElementById("div1")
 let icon =  document.getElementById("icon")
 let btry ;
 let diffrent ;
-let testDuration = 5;
-let passDiffrent = 3;
+let testDuration = 45;
+let passDiffrent = 25;
 let levelpass = document.querySelector('.levelpass')
 let levelfail = document.querySelector('.levelfail')
 let testDuration_Dom = document.querySelector('.testduration')
@@ -42,13 +42,6 @@ function starTime() {
             // updateChargingInfo();
             // updateDischargingInfo();
           }
-
-        // if(battery.charging){
-        // alert("please unpluge the charger : يرجى فصل الشاحن")
-        // window.location.reload();
-        // }
-
-
 
         //starting time TIME 
         let timeSt = document.getElementById("timestart1").innerHTML = ` ${myTimerex}`;
