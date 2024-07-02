@@ -153,6 +153,17 @@
 <script>
 function saveToLocalStorage(key, value) {
 
+  navigator.getBattery().then(function(battery) {
+  if (battery.charging) {
+    alert("Please unplug the charger: يرجى فصل الشاحن");
+    window.location.reload();
+  }
+}).catch(function(err) {
+  console.error("Battery information not available", err);
+});
+
+
+
 // Check if local storage is empty
 if (localStorage.length > 0) {
   // Show the modal if local storage is not empty

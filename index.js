@@ -4,17 +4,20 @@ let startButt = document.getElementById("start");
 let div1 =  document.getElementById("div1")
 let icon =  document.getElementById("icon")
 let btry ;
-let testDuration = 45;
+let diffrent ;
+let testDuration = 5;
+let passDiffrent = 3;
 let levelpass = document.querySelector('.levelpass')
 let levelfail = document.querySelector('.levelfail')
 let testDuration_Dom = document.querySelector('.testduration')
+let firstItemValue ;
+let lastItemValue ;
 
 //writ test duration in the page
 testDuration_Dom.innerHTML = `Note: The test will run for ${testDuration} minutes`;
 
 // this function will display hours: minutes :ampm 
-
- function myTimer(){
+function myTimer(){
    const date = new Date();
          var hours = date.getHours();
          var minutes = date.getMinutes();
@@ -32,20 +35,19 @@ var myTimerex = myTimer();
 
 // Battery info Api
 function starTime() {
+  navigator.getBattery().then(function (battery) {
+    function updateAllBatteryInfo() {
+            updateChargeInfo();
+            updateLevelInfo();
+            // updateChargingInfo();
+            // updateDischargingInfo();
+          }
 
-        navigator.getBattery().then(function (battery) {
-          function updateAllBatteryInfo() {
-          updateChargeInfo();
-          updateLevelInfo();
-          // updateChargingInfo();
-          // updateDischargingInfo();
-        }
+        // if(battery.charging){
+        // alert("please unpluge the charger : يرجى فصل الشاحن")
+        // window.location.reload();
+        // }
 
-
-        if(battery.charging){
-        alert("please unpluge the charger : يرجى فصل الشاحن")
-        window.location.reload();
-        }
 
 
         //starting time TIME 
@@ -55,7 +57,7 @@ function starTime() {
         var count = 0;
         let minutes = 0
 
-        function timer() {
+  function timer() {
           count = count + 1;
           if (count == 0) {
             // clearInterval(counter);
@@ -69,11 +71,11 @@ function starTime() {
           document.getElementById("time").innerHTML = hours + ":" + minutes + ":" + seconds + " "; 
           let timervar =  " Timer "+ hours +" : "+ minutes 
           localStorage.setItem('timer' , timervar)
-
-          if( minutes === testDuration) {
-
-        timeOut();
-        }
+       
+          if( minutes === testDuration || diffrent > passDiffrent ) {
+              timeOut();
+           }
+      
         }
 
         // level discharge counter
@@ -83,7 +85,7 @@ function starTime() {
         let timerResult ;
         let leveldiff ;
 
-        function leveltimer () {
+function leveltimer () {
         timerSeconds++;
         if (timerSeconds >= 60) {
             timerSeconds = 0;
@@ -98,44 +100,13 @@ function starTime() {
         setInterval(leveltimer, 1000); //1000 will  run it every 1 second
 
 
-        //stoping timer at 10 mints and show result
-        const timeOut = () => {
+        //stoping timer and show result
+ const timeOut = () => {
         clearInterval(counter);
         clearInterval(starTime)
         document.getElementById('instrct').style.display = "none";
 
-        const items = document.querySelectorAll(".levelpara");
-        const firstItemValue = items[items.length - 1].textContent;
-        const lastItemValue = items[0].textContent; 
-
-        let  batteryst = 0
-        let  batteryen = 0
-        const regex = /(\d+)%/;
-        const match = firstItemValue.match(regex);
-
-        if (match) {
-          const numericValue = parseInt(match[1]); // Extract the captured group and convert to a number
-          batteryst = numericValue
-        } else {
-            console.log("start value");
-        }
-
-        const regexEN = /(\d+)%/;
-        const matchEN = lastItemValue.match(regexEN);
-
-        if (matchEN) {
-        const numericValueEN = parseInt(matchEN[1]); // Extract the captured group and convert to a number
-        // console.log(numericValueEN); // Output: 100
-        batteryen = numericValueEN
-        } else {
-            console.log("end value ");
-        }
-
-
-
-        const diffrent = batteryst - batteryen;
-
-        if (diffrent >= 0 && diffrent < 26 && minutes === testDuration) {
+        if (diffrent >= 0 && diffrent < passDiffrent && minutes === testDuration) {
         document.getElementById("time").classList.add('pass');
           // Create a new h1 element
           var newHeading = document.createElement("h1");
@@ -144,8 +115,7 @@ function starTime() {
           newHeading.classList.add('passicon')
           document.querySelector('.passicon').textContent = "Test passed, discharged"+ ' ' +`${diffrent}%`+ ' in '+ `${minutes}`+ ' minutes';
 
-        }
-        else{
+        } else if ( diffrent > passDiffrent) {
           document.getElementById("time").classList.add('pass');
           // Create a new h1 element
           var newHeading = document.createElement("h1");
@@ -158,11 +128,13 @@ function starTime() {
           passIconElement.classList.remove('passicon')
           passIconElement.classList.add('red')
           document.getElementById("time").classList.add('fail');
-
         }
+  
             levelpass.innerHTML = "Start " + `${firstItemValue}`
             levelfail.innerHTML = "Finsh " + `${lastItemValue}`
         }
+
+
 
 
 
@@ -171,8 +143,8 @@ function starTime() {
         updateChargeInfo();
         });
 
-        //yes or no charging
-        function updateChargeInfo() {
+        //Yes or no charging
+  function updateChargeInfo() {
           document.getElementById("demo").innerHTML = ` ${battery.charging ? " Yes" : " No" }`;
         }
 
@@ -180,19 +152,15 @@ function starTime() {
 
         //Battery level change listner
         battery.addEventListener("levelchange", () => {
-
         console.log(timerResult)
         leveldiff = timerResult
         updateLevelInfo();
         timerSeconds = 0;
         timerMinutes = 0;
-
         });
 
         /////////// battery level ///////////
-      function updateLevelInfo(time, btrchr, daterestored) {
-
-
+      function updateLevelInfo( ) {
             // Set Battery level on charging 
               let  batteryy =  Math.floor(battery.level * 100) 
               const btrPresentage =[90,80,70,60,50,40,30,20,10,5,1]
@@ -211,8 +179,6 @@ function starTime() {
                 para.innerText = "Battery level " + `${ batteryy}%` + "\n";
                 btry.prepend(para) 
                 // btry.prepend("Battery level " + `${ batteryy}%` + "\n") 
-          
-          
               }
 
           // Set Time on charging 
@@ -236,16 +202,44 @@ function starTime() {
 
                 }else{
                   chrdiv.prepend(timeCharching);
-            
-                  
+ 
                   }
 
+                // Get level diffrent 
+                const items = document.querySelectorAll(".levelpara");
+                firstItemValue = items[items.length - 1].textContent;
+                lastItemValue = items[0].textContent; 
+        
+                let  batteryst = 0
+                let  batteryen = 0
+                const regex = /(\d+)%/;
+                const match = firstItemValue.match(regex);
+        
+                if (match) {
+                  const numericValue = parseInt(match[1]); // Extract the captured group and convert to a number
+                  batteryst = numericValue
+                } else {
+                    console.log("start value");
+                }
+        
+                const regexEN = /(\d+)%/;
+                const matchEN = lastItemValue.match(regexEN);
+        
+                if (matchEN) {
+                const numericValueEN = parseInt(matchEN[1]); // Extract the captured group and convert to a number
+                // console.log(numericValueEN); // Output: 100
+                batteryen = numericValueEN
+                } else {
+                    console.log("end value ");
+                }
+        
+                diffrent = batteryst - batteryen;
 
         //  ADD DATA TO LOCAL STORAGE
 
 
 
-        function restored() {// take value or js value no the text or sho presents frm storege
+        function restored() {// take value or js value no the text or sho presents from storege
                 var time = " " + timeCharching;
                 var battery = "Battery level   " + batteryy + "% = ";
                 let myInfo =  battery + time;
@@ -254,20 +248,14 @@ function starTime() {
                 localStorage.setItem('info', '[]');
               } 
 
-            let dataget = JSON.parse(localStorage.getItem('info'));
-            dataget.unshift(myInfo);
-
-            localStorage.setItem('info', JSON.stringify(dataget));
+                let dataget = JSON.parse(localStorage.getItem('info'));
+                dataget.unshift(myInfo);
+                localStorage.setItem('info', JSON.stringify(dataget));
         }
-
-
         restored()
       }
 
-
-
         // discharging time
-
         battery.addEventListener("dischargingtimechange", () => {
         updateDischargingInfo();
         });
@@ -284,21 +272,20 @@ function starTime() {
               document.getElementById("demo2").innerHTML = " Discharging time "+ hours+" : "+ minutes +" hrs"
             }       
               
-
         }
             updateDischargingInfo();
             
-        });
+});
 
         document.getElementById("start").disabled = 'true';
 
  }
 
      // function restor history 
-      function restored() {
-            document.getElementById('otest').innerHTML = " Restored Test Data"
+function restored() {
+          document.getElementById('otest').innerHTML = " Restored Test Data"
       let timerRestor = localStorage.getItem('timer')
-            document.getElementById("timerRs").innerHTML = timerRestor;
+          document.getElementById("timerRs").innerHTML = timerRestor;
       let dataget = JSON.parse(localStorage.getItem('info'));
 
       // MAP on dataget
@@ -322,13 +309,13 @@ function starTime() {
       }
 
 
-// FUNC CLEAR AND REFRESH
+      // FUNC CLEAR AND REFRESH
 function clearData (){
- localStorage.clear();
- var element = document.getElementById("demo3").innerHTML = " "
- window.location.reload();
+      localStorage.clear();
+      var element = document.getElementById("demo3").innerHTML = " "
+      window.location.reload();
 
-}
+      }
    
 // TEXTAREA RESTORE
 // document.getElementById("textareabtn").addEventListener("click", function ()
@@ -341,8 +328,8 @@ function clearData (){
          
 //    } , false);
 
-   function pauseTimer() {
-     clearInterval(starTime);
-     clearInterval(myTimer);
-     clearInterval(timer);
-   }
+  function pauseTimer() {
+        clearInterval(starTime);
+        clearInterval(myTimer);
+        clearInterval(timer);
+      }
